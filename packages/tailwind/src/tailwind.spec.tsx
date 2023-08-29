@@ -76,7 +76,7 @@ describe("Tailwind component", () => {
       );
 
       expect(actualOutput).toMatchInlineSnapshot(
-        `"<html><head><style>@media(min-width:640px){.sm_bg_red_300{background-color: rgb(252,165,165) !important;}}@media(min-width:768px){.md_bg_red_400{background-color: rgb(248,113,113) !important;}}@media(min-width:1024px){.lg_bg_red_500{background-color: rgb(239,68,68) !important;}}</style></head><body><div class="sm_bg_red_300 md_bg_red_400 lg_bg_red_500" style="background-color:rgb(254,202,202)"></div></body></html>"`,
+        `"<html><head><style>@media(min-width:640px){.sm\\:bg-red-300{background-color:rgb(252,165,165) !important;}}@media(min-width:768px){.md\\:bg-red-400{background-color:rgb(248,113,113) !important;}}@media(min-width:1024px){.lg\\:bg-red-500{background-color:rgb(239,68,68) !important;}}</style></head><body><div class="sm:bg-red-300 md:bg-red-400 lg:bg-red-500" style="background-color:rgb(254,202,202)"></div></body></html>"`,
       );
     });
 
@@ -137,7 +137,7 @@ describe("Tailwind component", () => {
       );
 
       expect(actualOutput).toMatchInlineSnapshot(
-        `"<html><head><style></style><link/><style>@media(min-width:640px){.sm_bg_red_500{background-color: rgb(239,68,68) !important;}}</style></head><body><div class="sm_bg_red_500" style="background-color:rgb(254,202,202)"></div></body></html>"`,
+        `"<html><head><style></style><link/><style>@media(min-width:640px){.sm\\:bg-red-500{background-color:rgb(239,68,68) !important;}}</style></head><body><div class="sm:bg-red-500" style="background-color:rgb(254,202,202)"></div></body></html>"`,
       );
     });
   });
@@ -310,12 +310,12 @@ describe("Tailwind component", () => {
       );
 
       expect(actualOutput).toMatchInlineSnapshot(
-        `"<html><head><style>@media(min-width:640px){.sm_border_custom{border: 2px solid !important;}}</style></head><body><div class="sm_border_custom" style="border:2px solid"></div></body></html>"`,
+        `"<html><head><style>@media(min-width:640px){.sm\\:border-custom{border:2px solid !important;}}</style></head><body><div class="sm:border-custom" style="border:2px solid"></div></body></html>"`,
       );
     });
   });
   describe("Class name replacement", () => {
-    it("should replace forward slash with underscore in both class name and selector", () => {
+    it("should escape forward slash in both class name", () => {
       const actualOutput = render(
         <Tailwind>
           <html>
@@ -328,10 +328,10 @@ describe("Tailwind component", () => {
         </Tailwind>,
       );
       expect(actualOutput).toMatchInlineSnapshot(
-        `"<html><head><style>@media(min-width:640px){.sm_w_1_2{width: 50% !important;}}</style></head><body><div style="width:100%"></div><div class="sm_w_1_2" style="width:50%"></div></body></html>"`,
+        `"<html><head><style>@media(min-width:640px){.sm\\:w-1\\/2{width:50% !important;}}</style></head><body><div style="width:100%"></div><div class="sm:w-1/2" style="width:50%"></div></body></html>"`,
       );
     });
-    it("should replace period with underscore in both class name and selector", () => {
+    it("should not replace period with underscore in class name", () => {
       const actualOutput = render(
         <Tailwind>
           <html>
@@ -344,10 +344,10 @@ describe("Tailwind component", () => {
         </Tailwind>,
       );
       expect(actualOutput).toMatchInlineSnapshot(
-        `"<html><head><style>@media(min-width:640px){.sm_w_1{width: 0.25rem !important;}.sm_w_1_5{width: 0.375rem !important;}}</style></head><body><div style="width:0.375rem"></div><div class="sm_w_1_5" style="width:0.375rem"></div></body></html>"`,
+        `"<html><head><style>@media(min-width:640px){.sm\\:w-1{width:0.25rem !important;}.sm\\:w-1.5{width:0.375rem !important;}}</style></head><body><div style="width:0.375rem"></div><div class="sm:w-1.5" style="width:0.375rem"></div></body></html>"`,
       );
     });
-    it("should replace percent signs with underscore in both class name and selector", () => {
+    it("should not replace percent signs in both class name and selector", () => {
       const actualOutput = render(
         <Tailwind>
           <html>
@@ -360,7 +360,7 @@ describe("Tailwind component", () => {
         </Tailwind>,
       );
       expect(actualOutput).toMatchInlineSnapshot(
-        `"<html><head><style>@media(min-width:640px){.sm_w_50_{width: 50% !important;}}</style></head><body><div style="width:50%"></div><div class="sm_w_50_" style="width:50%"></div></body></html>"`,
+        `"<html><head><style>@media(min-width:640px){.sm\\:w-\\[50%\\]{width:50% !important;}}</style></head><body><div style="width:50%"></div><div class="sm:w-[50%]" style="width:50%"></div></body></html>"`,
       );
     });
   });

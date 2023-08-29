@@ -68,10 +68,11 @@ export const Tailwind: React.FC<TailwindProps> = ({ children, config }) => {
           }
 
           if (domNode.attribs?.class) {
-            const cleanRegex = /[:#\!\-[\]\/\.%]+/g;
-            const cleanTailwindClasses = domNode.attribs.class
-              // replace all non-alphanumeric characters with underscores
-              .replace(cleanRegex, "_");
+            const cleanRegex = /\\/g;
+            const cleanTailwindClasses = domNode.attribs.class.replace(
+              cleanRegex,
+              "_",
+            );
 
             const currentStyles = domNode.attribs.style
               ? `${domNode.attribs.style};`
@@ -113,9 +114,9 @@ function cleanCss(css: string) {
   let newCss = css
     .replace(/\\/g, "")
     // find all css selectors and look ahead for opening and closing curly braces
-    .replace(/[.\!\#\w\d\\:\-\[\]\/\.%\(\))]+(?=\s*?{[^{]*?\})\s*?{/g, (m) => {
-      return m.replace(/(?<=.)[:#\!\-[\\\]\/\.%]+/g, "_");
-    })
+    // .replace(/[.\!\#\w\d\\:\-\[\]\/\.%\(\))]+(?=\s*?{[^{]*?\})\s*?{/g, (m) => {
+    //   return m.replace(/(?<=.)[:#\!\-[\\\]\/\.%]+/g, "_");
+    // })
     .replace(/font-family(?<value>[^;\r\n]+)/g, (m, value) => {
       return `font-family${value.replace(/['"]+/g, "")}`;
     });
@@ -137,7 +138,9 @@ function getMediaQueryCss(css: string) {
             const newContent = (content as string).replace(
               /(?:[\s\r\n]*)?(?<prop>[\w-]+)\s*:\s*(?<value>[^};\r\n]+)/gm,
               (_, prop, value) => {
-                return `${prop}: ${value} !important;`;
+                let [attrName, attrValue] = value.split("{");
+                attrName = attrName.replace(/([\[\]\/])/g, "\\$1");
+                return `${prop}\\:${attrName}{${attrValue} !important;`;
               },
             );
             return `${start}${newContent}${end}`;
